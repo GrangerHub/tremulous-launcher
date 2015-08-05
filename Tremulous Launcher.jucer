@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="o4F17v" name="Tremulous Launcher" projectType="guiapp" version="0.1.1"
+              bundleIdentifier="com.grangerhub.launcher" includeBinaryInAppConfig="1"
+              jucerVersion="3.2.0" companyName="GrangerHub" companyWebsite="http://grangerhub.com">
+  <MAINGROUP id="K4Vm1Q" name="Tremulous Launcher">
+    <GROUP id="{447CBC2B-21C0-1F83-21B5-5223F8A00A83}" name="Assets">
+      <FILE id="iLgyg1" name="jkent.key.pub" compile="0" resource="1" file="Assets/jkent.key.pub"/>
+      <FILE id="Tpg63Q" name="granger_large.png" compile="0" resource="0"
+            file="Assets/granger_large.png"/>
+      <FILE id="OgorYj" name="granger_small.png" compile="0" resource="0"
+            file="Assets/granger_small.png"/>
+      <FILE id="S5nKAC" name="tremulous-master.jpg" compile="0" resource="0"
+            file="Assets/tremulous-master.jpg"/>
+      <FILE id="Kik85N" name="tremulous.jpg" compile="0" resource="0" file="Assets/tremulous.jpg"/>
+    </GROUP>
+    <GROUP id="{84E0AF48-6968-6105-BAD4-A266A901A447}" name="Source">
+      <GROUP id="{CF6856D0-9A5B-0A78-DDB0-1C507B82B112}" name="nettle">
+        <FILE id="nWTIk3" name="sexp2bignum.c" compile="1" resource="0" file="Source/nettle/sexp2bignum.c"/>
+        <FILE id="Roe7xp" name="nettle-internal.h" compile="0" resource="0"
+              file="Source/nettle/nettle-internal.h"/>
+        <FILE id="nntYQF" name="sexp.h" compile="0" resource="0" file="Source/nettle/sexp.h"/>
+        <FILE id="jqwT87" name="sexp.c" compile="1" resource="0" file="Source/nettle/sexp.c"/>
+        <FILE id="DEzhtf" name="bignum.c" compile="1" resource="0" file="Source/nettle/bignum.c"/>
+        <FILE id="iML8YC" name="bignum.h" compile="0" resource="0" file="Source/nettle/bignum.h"/>
+        <FILE id="R9h5ry" name="gmp-glue.c" compile="1" resource="0" file="Source/nettle/gmp-glue.c"/>
+        <FILE id="IZ8AQV" name="gmp-glue.h" compile="0" resource="0" file="Source/nettle/gmp-glue.h"/>
+        <FILE id="SWZIrL" name="macros.h" compile="0" resource="0" file="Source/nettle/macros.h"/>
+        <FILE id="cmYFaO" name="mini-gmp.c" compile="1" resource="0" file="Source/nettle/mini-gmp.c"/>
+        <FILE id="Bw8R2G" name="mini-gmp.h" compile="0" resource="0" file="Source/nettle/mini-gmp.h"/>
+        <FILE id="ptQIbJ" name="nettle-meta.h" compile="0" resource="0" file="Source/nettle/nettle-meta.h"/>
+        <FILE id="FPkwd6" name="nettle-stdint.h" compile="0" resource="0" file="Source/nettle/nettle-stdint.h"/>
+        <FILE id="RvUz3Y" name="nettle-types.h" compile="0" resource="0" file="Source/nettle/nettle-types.h"/>
+        <FILE id="Vq1cxt" name="nettle-write.h" compile="0" resource="0" file="Source/nettle/nettle-write.h"/>
+        <FILE id="qav2gp" name="pkcs1-rsa-sha256.c" compile="1" resource="0"
+              file="Source/nettle/pkcs1-rsa-sha256.c"/>
+        <FILE id="nlqaV3" name="pkcs1.c" compile="1" resource="0" file="Source/nettle/pkcs1.c"/>
+        <FILE id="FNfTq3" name="pkcs1.h" compile="0" resource="0" file="Source/nettle/pkcs1.h"/>
+        <FILE id="iNxOu3" name="rsa-sha256-verify.c" compile="1" resource="0"
+              file="Source/nettle/rsa-sha256-verify.c"/>
+        <FILE id="jtErLL" name="rsa-verify.c" compile="1" resource="0" file="Source/nettle/rsa-verify.c"/>
+        <FILE id="bpul3p" name="rsa.c" compile="1" resource="0" file="Source/nettle/rsa.c"/>
+        <FILE id="S2GVDd" name="rsa.h" compile="0" resource="0" file="Source/nettle/rsa.h"/>
+        <FILE id="Wtrlnw" name="sexp2rsa.c" compile="1" resource="0" file="Source/nettle/sexp2rsa.c"/>
+        <FILE id="yTUqpI" name="sha2.h" compile="0" resource="0" file="Source/nettle/sha2.h"/>
+        <FILE id="N3mIE9" name="sha256-compress.c" compile="1" resource="0"
+              file="Source/nettle/sha256-compress.c"/>
+        <FILE id="uwXIUY" name="sha256.c" compile="1" resource="0" file="Source/nettle/sha256.c"/>
+        <FILE id="khcUYL" name="version.h" compile="0" resource="0" file="Source/nettle/version.h"/>
+        <FILE id="sOcAE1" name="write-be32.c" compile="1" resource="0" file="Source/nettle/write-be32.c"/>
+      </GROUP>
+      <FILE id="LhXf9X" name="Component.cpp" compile="1" resource="0" file="Source/Component.cpp"/>
+      <FILE id="ma9fKC" name="Component.h" compile="0" resource="0" file="Source/Component.h"/>
+      <FILE id="x5EuaM" name="Crypto.cpp" compile="1" resource="0" file="Source/Crypto.cpp"/>
+      <FILE id="Uwc3WR" name="Crypto.h" compile="0" resource="0" file="Source/Crypto.h"/>
+      <FILE id="pR3Q9S" name="IniFile.cpp" compile="1" resource="0" file="Source/IniFile.cpp"/>
+      <FILE id="jyh9bg" name="IniFile.h" compile="0" resource="0" file="Source/IniFile.h"/>
+      <FILE id="K88yuI" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+      <FILE id="v7cMD3" name="Main.h" compile="0" resource="0" file="Source/Main.h"/>
+      <FILE id="gLBofA" name="PublicKey.cpp" compile="1" resource="0" file="Source/PublicKey.cpp"/>
+      <FILE id="DhHf03" name="PublicKey.h" compile="0" resource="0" file="Source/PublicKey.h"/>
+      <FILE id="qweOIR" name="Semver.cpp" compile="1" resource="0" file="Source/Semver.cpp"/>
+      <FILE id="OBmrCh" name="Semver.h" compile="0" resource="0" file="Source/Semver.h"/>
+      <FILE id="uHBReQ" name="SplashComponent.cpp" compile="1" resource="0"
+            file="Source/SplashComponent.cpp"/>
+      <FILE id="NnhTJl" name="SplashComponent.h" compile="0" resource="0"
+            file="Source/SplashComponent.h"/>
+      <FILE id="SxnjAw" name="SplashWindow.cpp" compile="1" resource="0"
+            file="Source/SplashWindow.cpp"/>
+      <FILE id="hWDe4y" name="SplashWindow.h" compile="0" resource="0" file="Source/SplashWindow.h"/>
+      <FILE id="MuvS9q" name="Updater.cpp" compile="1" resource="0" file="Source/Updater.cpp"/>
+      <FILE id="Vpd9bS" name="Updater.h" compile="0" resource="0" file="Source/Updater.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX" extraDefs="LUA_USE_MACOSX" smallIcon="OgorYj"
+               bigIcon="Tpg63Q">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" osxSDK="default" osxCompatibility="default" osxArchitecture="default"
+                       isDebug="1" optimisation="1" targetName="Tremulous Launcher"/>
+        <CONFIGURATION name="Release" osxSDK="default" osxCompatibility="default" osxArchitecture="default"
+                       isDebug="0" optimisation="3" targetName="Tremulous Launcher"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_gui_basics" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+    <VS2013 targetFolder="Builds/VisualStudio2013" extraDefs="" smallIcon="OgorYj"
+            bigIcon="Tpg63Q">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="1" optimisation="1" targetName="Tremulous Launcher"/>
+        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="0" optimisation="3" targetName="Tremulous Launcher"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_gui_basics" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../JUCE/modules"/>
+      </MODULEPATHS>
+    </VS2013>
+    <LINUX_MAKE targetFolder="Builds/LinuxMakefile" extraDefs="LUA_USE_LINUX"
+                smallIcon="OgorYj" bigIcon="Tpg63Q" externalLibraries="">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
+                       targetName="tremlauncher" defines=""/>
+        <CONFIGURATION name="Release" libraryPath="/usr/X11R6/lib/" isDebug="0" optimisation="3"
+                       targetName="tremlauncher"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_gui_basics" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../JUCE/modules"/>
+      </MODULEPATHS>
+    </LINUX_MAKE>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULES id="juce_core" showAllCode="1" useLocalCopy="0"/>
+    <MODULES id="juce_data_structures" showAllCode="1" useLocalCopy="0"/>
+    <MODULES id="juce_events" showAllCode="1" useLocalCopy="0"/>
+    <MODULES id="juce_graphics" showAllCode="1" useLocalCopy="0"/>
+    <MODULES id="juce_gui_basics" showAllCode="1" useLocalCopy="0"/>
+  </MODULES>
+  <JUCEOPTIONS/>
+</JUCERPROJECT>
