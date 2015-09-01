@@ -152,6 +152,9 @@
     <ClCompile Include="..\..\Source\SplashComponent.cpp"/>
     <ClCompile Include="..\..\Source\SplashWindow.cpp"/>
     <ClCompile Include="..\..\Source\Updater.cpp"/>
+    <ClCompile Include="..\..\..\JUCE\modules\juce_core\text\juce_Base64.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\..\JUCE\modules\juce_core\text\juce_CharacterFunctions.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -936,6 +939,7 @@
     <ClInclude Include="..\..\Source\SplashComponent.h"/>
     <ClInclude Include="..\..\Source\SplashWindow.h"/>
     <ClInclude Include="..\..\Source\Updater.h"/>
+    <ClInclude Include="..\..\..\JUCE\modules\juce_core\text\juce_Base64.h"/>
     <ClInclude Include="..\..\..\JUCE\modules\juce_core\text\juce_CharacterFunctions.h"/>
     <ClInclude Include="..\..\..\JUCE\modules\juce_core\text\juce_CharPointer_ASCII.h"/>
     <ClInclude Include="..\..\..\JUCE\modules\juce_core\text\juce_CharPointer_UTF8.h"/>

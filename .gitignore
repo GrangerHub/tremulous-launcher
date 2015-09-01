@@ -1,7 +1,11 @@
 Builds/LinuxMakefile/build
+Builds/MacOSX/Tremulous Launcher.xcodeproj/project.xcworkspace/
+Builds/MacOSX/Tremulous Launcher.xcodeproj/xcuserdata/
+Builds/MacOSX/build
 Builds/VisualStudio2013/Debug
 Builds/VisualStudio2013/Release
 *.sdf
 *.suo
 *.o
 *.d
+.DS_Store
