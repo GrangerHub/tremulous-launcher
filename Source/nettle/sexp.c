@@ -300,7 +300,7 @@ sexp_iterator_check_type(struct sexp_iterator *iterator,
   return (sexp_iterator_enter_list(iterator)
 	  && iterator->type == SEXP_ATOM
 	  && !iterator->display
-	  && strlen(type) == iterator->atom_length
+	  && strlen((const char *)type) == iterator->atom_length
 	  && !memcmp(type, iterator->atom, iterator->atom_length)
 	  && sexp_iterator_next(iterator));
 }
@@ -316,7 +316,7 @@ sexp_iterator_check_types(struct sexp_iterator *iterator,
     {
       unsigned i;
       for (i = 0; i<ntypes; i++)
-	if (strlen(types[i]) == iterator->atom_length
+	if (strlen((const char *)types[i]) == iterator->atom_length
 	    && !memcmp(types[i], iterator->atom,
 		       iterator->atom_length))
 	  return sexp_iterator_next(iterator) ? types[i] : NULL;
@@ -357,7 +357,7 @@ sexp_iterator_assoc(struct sexp_iterator *iterator,
 		{
 		  /* NOTE: The strlen could be put outside of the
 		   * loop */
-		  if (strlen(keys[i]) == iterator->atom_length
+		  if (strlen((const char *)keys[i]) == iterator->atom_length
 		      && !memcmp(keys[i], iterator->atom,
 				 iterator->atom_length))
 		    {

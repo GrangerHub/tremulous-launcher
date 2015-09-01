@@ -23,7 +23,7 @@ const char Updater::UPDATER_URL_PREFIX[] = "http://trem.jkent.net/updater/";
 Updater *Updater::updater;
 
 Updater::Updater()
-    :Thread("Updater Thread"), status(UPDATER_NOTSTARTED), overallPercent(0), taskPercent(0)
+    :Thread("Updater Thread"), status(UPDATER_NOTSTARTED), taskPercent(0), overallPercent(0)
 {
     basepath = launcherApplication::getConfig()->getString("general", "basepath");
 

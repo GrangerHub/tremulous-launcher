@@ -60,7 +60,7 @@ rsa_keypair_from_sexp_alist(struct rsa_public_key *pub,
 			    struct sexp_iterator *i)
 {
   static const uint8_t * const names[2]
-    = { "n", "e" };
+    = { (uint8_t *)"n", (uint8_t *)"e" };
   struct sexp_iterator values[2];
   
   if (!sexp_iterator_assoc(i, 2, names, values))
@@ -86,9 +86,9 @@ rsa_keypair_from_sexp(struct rsa_public_key *pub,
 {
   struct sexp_iterator i;
   static const uint8_t * const types[2]
-    = { "private-key", "public-key" };
+    = { (uint8_t *)"private-key", (uint8_t *)"public-key" };
   static const uint8_t * const names[3]
-    = { "rsa", "rsa-pkcs1", "rsa-pkcs1-sha1" };
+    = { (uint8_t *)"rsa", (uint8_t *)"rsa-pkcs1", (uint8_t *)"rsa-pkcs1-sha1" };
 
   if (!sexp_iterator_first(&i, length, expr))
     return 0;
