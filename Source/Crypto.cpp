@@ -146,7 +146,7 @@ void Crypto::checkKeys()
     message = String("  URL: ") + url.toString(true);
     DBG(String::formatted("  URL: %s", url.toString(true).toRawUTF8()));
 
-    InputStream *stream = url.createInputStream(false);
+    InputStream *stream = url.createInputStream(false, nullptr, nullptr, String(), 5000);
     if (stream == nullptr) {
         Logger::writeToLog("  Unable to create stream");
         return;

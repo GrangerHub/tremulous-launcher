@@ -155,7 +155,7 @@ bool Updater::getLatestComponents()
         .withParameter("platform", launcherApplication::getConfig()->getString("updater", "platform"))
         .withParameter("components", "launcher,tremulous");
 
-    ScopedPointer<InputStream> stream(url.createInputStream(false, nullptr, nullptr, String(), 2000));
+    ScopedPointer<InputStream> stream(url.createInputStream(false, nullptr, nullptr, String(), 5000));
     if (stream == nullptr) {
         return false;
     }
@@ -241,7 +241,7 @@ bool Updater::downloadFile(const URL& url, const File& file, int64 resume)
 
     StringPairArray responseHeaders;
     int statusCode;
-    ScopedPointer<InputStream> inputStream(url.createInputStream(false, nullptr, nullptr, headers, 2000, &responseHeaders, &statusCode));
+    ScopedPointer<InputStream> inputStream(url.createInputStream(false, nullptr, nullptr, headers, 5000, &responseHeaders, &statusCode));
     if (inputStream == nullptr) {
         return false;
     }

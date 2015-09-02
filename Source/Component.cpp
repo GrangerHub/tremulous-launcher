@@ -66,7 +66,7 @@ namespace Launcher
             .withParameter("platform", launcherApplication::getConfig()->getString("updater", "platform"))
             .withParameter("component", name);
 
-        ScopedPointer<InputStream> stream(url.createInputStream(false, nullptr, nullptr, String(), 2000));
+        ScopedPointer<InputStream> stream(url.createInputStream(false, nullptr, nullptr, String(), 5000));
         if (stream == nullptr) {
             return false;
         }
