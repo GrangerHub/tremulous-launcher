@@ -14,17 +14,17 @@ public:
     const String getApplicationName() override;
     const String getApplicationVersion() override;
     bool moreThanOneInstanceAllowed() override;
-    void initialise (const String& commandLine) override;
+    void initialise(const String& commandLine) override;
     void shutdown() override;
     void systemRequestedQuit() override;
-    void anotherInstanceStarted (const String& commandLine) override;
+    void anotherInstanceStarted(const String& commandLine) override;
 
     void initLauncher();
     void initApplication();
 
     static void runTremulous();
     static void runLauncher();
-    static bool Elevate(const StringArray& commandLine=StringArray());
+    static bool Elevate(const StringArray& commandLineArray = StringArray());
     static IniFile *getConfig();
     static bool isQuitting();
 

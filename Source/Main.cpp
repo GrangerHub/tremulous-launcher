@@ -7,12 +7,18 @@
 #if defined(JUCE_LINUX) || defined(JUCE_BSD)
  #include <unistd.h>
  #include <sys/types.h>
-#endif
 
-#if defined(JUCE_WINDOWS)
+#elif defined(JUCE_WINDOWS)
  #include <Windows.h>
  #include <tchar.h>
+
+#elif defined(JUCE_MAC)
+ #include <stdlib.h>
+ #include <Security/Authorization.h>
+ #include <Security/AuthorizationTags.h>
 #endif
+
+
 
 launcherApplication::launcherApplication()
     :quitting(false)
@@ -36,14 +42,15 @@ bool launcherApplication::moreThanOneInstanceAllowed()
 void launcherApplication::initialise(const String& commandLine)
 {
     File appDataDirectory(File::getSpecialLocation(File::userApplicationDataDirectory));
-    
-   #if defined(JUCE_LINUX) || defined(JUCE_BSD)
+
+#if defined(JUCE_LINUX) || defined(JUCE_BSD)
     settingsDirectory = appDataDirectory.getChildFile(".tremulous");
-   #elif defined(JUCE_WINDOWS)
+#elif defined(JUCE_WINDOWS)
     settingsDirectory = appDataDirectory.getChildFile("Tremulous");
-   #elif defined(JUCE_MAC)
+#elif defined(JUCE_MAC)
+    // FIXME/Verify
     settingsDirectory = appDataDirectory.getChildFile("Application Support").getChildFile("Tremulous");
-   #endif
+#endif
 
     File logFile(settingsDirectory.getChildFile("launcher.log"));
     logger = new FileLogger(logFile, ProjectInfo::projectName, 0);
@@ -60,11 +67,14 @@ void launcherApplication::initialise(const String& commandLine)
     File defaultBasepath;
     File defaultHomepath(settingsDirectory);
 
-   #if defined(JUCE_LINUX) || defined(JUCE_BSD)
+#if defined(JUCE_LINUX) || defined(JUCE_BSD)
     defaultBasepath = "/usr/local/games/tremulous";
-   #elif defined(JUCE_MAC) || defined(JUCE_WINDOWS)
+#elif defined(JUCE_WINDOWS)
     defaultBasepath = File::getSpecialLocation(File::globalApplicationsDirectory).getChildFile("Tremulous");
-   #endif
+#elif defined(JUCE_MAC)
+    //  FIXME/Verify
+    defaultBasepath = File::getSpecialLocation(File::globalApplicationsDirectory).getChildFile("Tremulous");
+#endif
 
     config->setDefault("general", "overpath", defaultBasepath.getFullPathName());
     config->setDefault("general", "basepath", defaultBasepath.getFullPathName());
@@ -72,27 +82,27 @@ void launcherApplication::initialise(const String& commandLine)
 
     config->setDefault("updater", "downloads", defaultBasepath.getChildFile("updater").getChildFile("downloads").getFullPathName());
 
-  #if defined(JUCE_LINUX)
-   #if __x86_64__
+#if defined(JUCE_LINUX)
+ #if __x86_64__
     String defaultPlatform("linux64");
-   #else
+ #else
     String defaultPlatform("linux32");
-   #endif
-  #elif defined(JUCE_BSD) && defined(__FreeBSD__)
-   #if __x86_64__
+ #endif
+#elif defined(JUCE_BSD) && defined(__FreeBSD__)
+ #if __x86_64__
     String defaultPlatform("freebsd64");
-   #else
+ #else
     String defaultPlatform("freebsd32");
-   #endif
-  #elif defined(JUCE_MAC)
-    String defaultPlatform("mac");
-  #elif defined(JUCE_WINDOWS)
-   #if _WIN64 || __x86_64__
+ #endif
+#elif defined(JUCE_WINDOWS)
+ #if _WIN64 || __x86_64__
     String defaultPlatform("win64");
-   #else
+ #else
     String defaultPlatform("win32");
-   #endif
-  #endif
+ #endif
+#elif defined(JUCE_MAC)
+    String defaultPlatform("mac");
+#endif
 
     config->setDefault("updater", "platform", defaultPlatform);
     config->setDefault("updater", "channel", "release");
@@ -108,7 +118,9 @@ void launcherApplication::initialise(const String& commandLine)
     laf->setColour(TextButton::textColourOffId, Colour(0xFFFFFFFF));
 
     // Delete old launcher if it exists
-    File launcherPath(File::getSpecialLocation(File::SpecialLocationType::currentApplicationFile));
+    File launcherPath(File::getSpecialLocation(
+            File::SpecialLocationType::currentApplicationFile));
+
     File oldLauncherPath(launcherPath.getFullPathName() + ".old");
     oldLauncherPath.deleteFile();
 
@@ -141,7 +153,8 @@ void launcherApplication::systemRequestedQuit()
 
     quitting = true;
 
-    if (!splashWindow || !splashWindow->updaterRunning()) {
+    if (!splashWindow || !splashWindow->updaterRunning())
+    {
         quit();
     }
 }
@@ -162,67 +175,58 @@ bool launcherApplication::isQuitting()
 bool launcherApplication::Elevate(const StringArray& commandLineArray)
 {
 #if defined(JUCE_LINUX) || defined(JUCE_BSD)
+    if (geteuid() == 0) {
+        return true;
+    }
 
-	if (geteuid() == 0) {
-		return true;
-	}
+    String parameters("--user root /usr/bin/env ");
 
-	String parameters("--user root /usr/bin/env ");
+    const char *var = getenv("DISPLAY");
+    if (var) {
+        String s("DISPLAY=" + String(var).quoted());
+        parameters += s + " ";
+    }
 
-	const char *var;
+    var = getenv("XAUTHORITY");
+    if (var) {
+        String s("XAUTHORITY=" + String(var).quoted());
+        parameters += s + " ";
+    }
 
-	var = getenv("DISPLAY");
-	if (var) {
-		String s("DISPLAY=" + String(var));
-		if (s.contains(" ")) {
-			s = s.quoted();
-		}
-		parameters += s + " ";
-	}
+    String launcher(File::getSpecialLocation(
+                File::currentExecutableFile).getFullPathName());
+    if (launcher.contains(" ")) {
+        launcher = launcher.quoted();
+    }
 
-	var = getenv("XAUTHORITY");
-	if (var) {
-		String s("XAUTHORITY=" + String(var));
-		if (s.contains(" ")) {
-			s = s.quoted();
-		}
-		parameters += s + " ";
-	}
+    parameters += String(" ") + launcher;
+    for (int i = 0; i < commandLineArray.size(); i++)
+    {
+        parameters += " ";
+        if (commandLineArray[i].contains(" "))
+            parameters += commandLineArray[i].quoted();
+        else
+            parameters += commandLineArray[i];
+    }
 
-	String launcher(File::getSpecialLocation(File::currentExecutableFile).getFullPathName());
-	if (launcher.contains(" ")) {
-		launcher = launcher.quoted();
-	}
+    File pkexec("/usr/bin/pkexec");
+    if (pkexec.exists() && pkexec.startAsProcess(parameters)) {
+        quit();
+    }
 
-	parameters += String(" ") + launcher;
-	for (int i = 0; i < commandLineArray.size(); i++) {
-		parameters += " ";
-		if (commandLineArray[i].contains(" ")) {
-			parameters += commandLineArray[i].quoted();
-		} else {
-			parameters += commandLineArray[i];
-		}
-	}
+    pkexec = "/usr/local/bin/pkexec";
+    if (pkexec.exists() && pkexec.startAsProcess(parameters)) {
+        quit();
+    }
 
-	File pkexec("/usr/bin/pkexec");
-	if (pkexec.exists() && pkexec.startAsProcess(parameters)) {
-		launcherApplication::quit();
-	}
-
-	pkexec = "/usr/local/bin/pkexec";
-	if (pkexec.exists() && pkexec.startAsProcess(parameters)) {
-		launcherApplication::quit();
-	}
-#endif
-
-#if defined(JUCE_WINDOWS)
+#elif defined(JUCE_WINDOWS)
     BOOL fIsRunAsAdmin = FALSE;
     DWORD dwError = ERROR_SUCCESS;
     PSID pAdministratorsGroup = NULL;
 
     SID_IDENTIFIER_AUTHORITY NtAuthority = SECURITY_NT_AUTHORITY;
     if (!AllocateAndInitializeSid(&NtAuthority, 2, SECURITY_BUILTIN_DOMAIN_RID,
-        DOMAIN_ALIAS_RID_ADMINS, 0, 0, 0, 0, 0, 0, &pAdministratorsGroup)) {
+                DOMAIN_ALIAS_RID_ADMINS, 0, 0, 0, 0, 0, 0, &pAdministratorsGroup)) {
         dwError = GetLastError();
         goto cleanup;
     }
@@ -273,7 +277,52 @@ cleanup:
     if (ShellExecuteEx(&sei)) {
         _exit(1);
     }
-#endif
+
+#elif defined(JUCE_MAC)
+    if (geteuid() == 0) {
+        return true;
+    }
+
+    String launcher(File::getSpecialLocation(
+                File::currentExecutableFile).getFullPathName());
+
+    const char * execpath = launcher.toRawUTF8();
+    char * args[] = { NULL };
+
+    OSStatus           err;
+    AuthorizationRef   ref;
+    AuthorizationFlags flags;
+
+    flags = kAuthorizationFlagDefaults;
+    err   = AuthorizationCreate(NULL, kAuthorizationEmptyEnvironment, flags, &ref);
+    if ( err != errAuthorizationSuccess ) {
+        quit();
+    }
+
+    AuthorizationItem    _temp = { kAuthorizationRightExecute, 0, NULL, 0 };
+    AuthorizationRights rights = { 1, &_temp };
+
+    flags = kAuthorizationFlagDefaults
+          | kAuthorizationFlagInteractionAllowed
+          | kAuthorizationFlagPreAuthorize
+          | kAuthorizationFlagExtendRights;
+
+    err  = AuthorizationCopyRights(ref, &rights, NULL, flags, NULL);
+    if ( err != errAuthorizationSuccess ) {
+        AuthorizationFree(ref, kAuthorizationFlagDefaults);
+        quit();
+    }
+
+    flags = kAuthorizationFlagDefaults;
+    err  = AuthorizationExecuteWithPrivileges(ref, execpath, flags, args, NULL);
+    AuthorizationFree(ref, kAuthorizationFlagDefaults);
+
+    // Probably overkill.
+    if ( err != errAuthorizationSuccess ) {
+        quit();
+    }
+#endif // JUCE_MAC
+
     return false;
 }
 
@@ -290,6 +339,7 @@ void launcherApplication::runTremulous()
     return;
 
     launcherApplication *app = (launcherApplication *)JUCEApplication::getInstance();
+
     StringArray commandLineArray;
     commandLineArray.add("+set");
     commandLineArray.add("fs_overpath");
@@ -298,32 +348,28 @@ void launcherApplication::runTremulous()
     commandLineArray.add("+set");
     commandLineArray.add("fs_basepath");
     commandLineArray.add(app->config->getString("general", "basepath"));
-    
+
     commandLineArray.add("+set");
     commandLineArray.add("fs_homepath");
     commandLineArray.add(app->config->getString("general", "homepath"));
 
     File tremulousDir(app->config->getString("general", "overpath"));
-   #if defined(JUCE_LINUX) || defined(JUCE_BSD)
+#if defined(JUCE_LINUX) || defined(JUCE_BSD)
     File tremulousApp(tremulousDir.getChildFile("tremulous"));
-   #elif defined(JUCE_MAC)
-    File tremulousApp(tremulousDir.getChildFile("Tremulous.app"));
-   #elif defined(JUCE_WINDOWS)
+#elif defined(JUCE_WINDOWS)
     File tremulousApp(tremulousDir.getChildFile("tremulous.exe"));
-   #endif
+#elif defined(JUCE_MAC)
+    // FIXME
+    File tremulousApp(tremulousDir.getChildFile("Tremulous.app"));
+#endif
 
-   #if defined(JUCE_WINDOWS)
+#if defined(JUCE_WINDOWS)
     String commandLine;
+
     for (int i = 0; i < commandLineArray.size(); i++) {
-        if (commandLineArray[i].contains(" ")) {
-            commandLine += commandLineArray[i].quoted();
-        }
-        else {
-            commandLine += commandLineArray[i];
-        }
-        if (i + 1 < commandLineArray.size()) {
+        commandLine += commandLineArray[i].quoted();
+        if (i + 1 < commandLineArray.size())
             commandLine += " ";
-        }
     }
 
     SHELLEXECUTEINFO sei = { 0 };
@@ -332,10 +378,9 @@ void launcherApplication::runTremulous()
     sei.lpFile = tremulousApp.getFullPathName().toUTF8();
     sei.lpParameters = commandLine.toUTF8();
     sei.nShow = SW_NORMAL;
-    if (ShellExecuteEx(&sei)) {
+    if (ShellExecuteEx(&sei))
         _exit(1);
-    }
-   #endif
+#endif
 }
 
 void launcherApplication::runLauncher()
@@ -343,24 +388,23 @@ void launcherApplication::runLauncher()
     Logger::writeToLog("Running launcher...");
 
     File launcherDir(File::getSpecialLocation(File::currentApplicationFile).getParentDirectory());
-   #if defined(JUCE_LINUX) || defined(JUCE_BSD)
+#if defined(JUCE_LINUX) || defined(JUCE_BSD)
     File launcherApp(launcherDir.getChildFile("tremlauncher"));
-   #elif defined(JUCE_MAC)
-    File launcherApp(launcherDir.getChildFile("Tremulous Launcher.app"));
-   #elif defined(JUCE_WINDOWS)
+#elif defined(JUCE_WINDOWS)
     File launcherApp(launcherDir.getChildFile("Tremulous Launcher.exe"));
-   #endif
+#elif defined(JUCE_MAC)
+    File launcherApp(launcherDir.getChildFile("Tremulous Launcher.app"));
+#endif
 
-   #if defined(JUCE_WINDOWS)
+#if defined(JUCE_WINDOWS)
     SHELLEXECUTEINFO sei = { 0 };
     sei.cbSize = sizeof(SHELLEXECUTEINFO);
     sei.lpFile = launcherApp.getFullPathName().toUTF8();
     sei.lpParameters = GetCommandLine();
     sei.nShow = SW_NORMAL;
-    if (ShellExecuteEx(&sei)) {
+    if (ShellExecuteEx(&sei))
         _exit(1);
-    }
-   #endif
+#endif
     return;
 }
 

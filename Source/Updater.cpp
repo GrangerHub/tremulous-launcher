@@ -170,7 +170,7 @@ bool Updater::getLatestComponents()
 
     components.clear();
     for (int i = 0; i < versionsSet->size(); i++) {
-        String componentName(versionsSet->getName(i));
+        String componentName(versionsSet->getName(i).toString());
         Launcher::Component component(componentName);
         component.setRemoteVersion(versionsSet->getValueAt(i).toString());
         components.add(component);
