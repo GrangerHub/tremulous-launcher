@@ -58,7 +58,7 @@ void IniFile::save()
     const GenericScopedLock<CriticalSection> scopedlock(lock);
     String config;
     for (int i = 0; i < data.size(); i++) {
-        String section(data.getName(i));
+        String section(data.getName(i).toString());
         DynamicObject *sectionObject = data[section].getDynamicObject();
         NamedValueSet *sectionSet = &sectionObject->getProperties();
 
